@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg border-bottom border-dark navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/books">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/books/add">Add Book and Review <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/users/logoff">
+                    <button class="btn btn-light my-2 my-sm-0" type="submit">Logout</button>
+                </form>
+            </div>
+        </nav>
+    <div class='container'>
+        <div class="row mt-5">
+            <div class="col-8 offset-2 mt-3">
+                <h4 class="col-12 font-weight-bold">User Alias: {{ user.alias }}</h2>
+                <p class="col-12 font-weight-bold mb-1">Name: <span class='font-weight-normal'>{{ user.name }}</span></p>
+                <p class="col-12 font-weight-bold mb-1">Email: <span class='font-weight-normal'>{{ user.email }}</span></p>
+                <p class="col-12 font-weight-bold">Total Reviews: <span class='font-weight-normal'>{{ numReviews }}</span></p>
+            </div>
+        </div>
+        <div class='row mt-3'>
+            <h4 class='mb-2'>Posted reviews on the following books:</h4>
+            {% for review in user.user_reviews.all %}
+            <a href='/books/{{ review.review_of_book.id }}' class='col-12'><p>{{ review.review_of_book.title }}</p></a>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg border-bottom border-dark navbar-light bg-light">
+        <a class="navbar-brand" href="/">Test App</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/users/edit/{{ activeUser.id }}">Profile <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action='/users/logoff' method='post'>
+                {% csrf_token %}
+                <button class="btn btn-light my-2 my-sm-0" type="submit">Log Off</button>
+            </form>
+        </div>
+    </nav>
+    <div class='container'>
+        <div class='row mb-3 mt-4'>
+            {% if activeUser.user_level != 9 or activeUser.id == user.id %}
+            <h2 class='display-4 col-4 font-weight-bold'>Edit Profile</h2>
+            {% endif %}
+            {% if activeUser.user_level == 9 and activeUser.id != user.id %}
+            <h2 class='display-4 col-4 font-weight-bold'>Edit User #{{ user.id }}</h2>
+            {% endif %}
+        </div>
+        <div class='row'>
+            <div class='col-4 mt-2 shadow border rounded border-light'>
+                <h4 class='mt-2'>Edit Information</h4>
+                <form action='/users/edit/{{ user.id }}/process' method='post'>
+                    {% csrf_token %}
+                    <label for='email' class='mb-1 mt-4'>Email Address:</label>
+                    <input type='text' name='email' class='form-control' placeholder='{{ user.email }}'>
+
+                    <label for='first_name' class='mb-1 mt-4'>First Name:</label>
+                    <input type='text' name='first_name' class='form-control' placeholder='{{ user.first_name }}'>
+
+                    <label for='last_name' class='mb-1 mt-4'>Last Name:</label>
+                    <input type='text' name='last_name' class='form-control' placeholder='{{ user.last_name }}'>
+                    {% if activeUser.user_level == 9 and activeUser.id != user.id %}
+                    <label for='user_level' class='mb-1 mt-4'>User Level:</label>
+                    <select name='user_level'>
+                        <option value='1'>Normal</option>
+                        <option value='9'>Admin</option>
+                    </select>
+                    {% endif %}
+                    <input type='hidden' name='secret' value='upd_info'>
+                    <button type='submit' name='submit' class='btn col-2 offset-10 mt-3 mb-3 btn-success'>Save</button>
+                </form>
+            </div>
+            <div class='col-4'>
+                {% if messages %}
+                    {% for message in messages %}
+                    <h6 class="alert {% if message.tags %} alert-{{ message.tags }}{% endif %} text-danger my-1">{{ message|safe }}</h6>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class='col-4 mt-2 shadow border rounded border-light'>
+                <h4 class='mt-2'>Change Password</h4>
+                <form action='/users/edit/{{ user.id }}/process' method='post'>
+                    {% csrf_token %}
+                    <label for='password' class='mb-1 mt-4'>Password:</label>
+                    <input type='password' name='password' class='form-control'>
+                    <label for='pass_conf' class='mb-1 mt-4'>Password Confirmation:</label>
+                    <input type='password' name='pass_conf' class='form-control'>
+                    <input type='hidden' name='secret' value='upd_pass'>
+                    <button type='submit' class='btn col-5 offset-7 mt-3 mb-3 btn-success'>Update Password</button>
+                </form>
+            </div>
+        </div>
+        {% if activeUser.user_level != 9 or activeUser.user_id == user.user_id %}
+        <div class='row'>
+            <div class='col-12 mt-3 shadow-lg border rounded border-light'>
+                <h4 class='mt-2'>Edit Description</h4>
+                <form action='/users/edit/{{ user.id }}/process' method='post'>
+                    {% csrf_token %}
+                    <label for='description' class='mb-1 mt-3'>Description:</label>
+                    <textarea name='description' rows='4' placeholder='{{ user.description }}' class='form-control'></textarea>
+                    <input type='hidden' name='secret' value='upd_desc'>
+                    <button type='submit' name='submit' value='upd_desc' class='btn col-2 offset-10 mt-3 mb-3 btn-success'>Save</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

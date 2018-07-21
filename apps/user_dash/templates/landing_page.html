@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+        #jumbotron{
+            font-size: 16pt;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <nav class="navbar navbar-expand-lg border-bottom border-dark navbar-light bg-light">
+            <a class="navbar-brand" href="/">Test App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action='/signin'>
+                    <button class="btn btn-light my-2 my-sm-0" type="submit">Sign in</button>
+                </form>
+            </div>
+        </nav>
+        <div class='row offset-1 col-10 bg-secondary mt-5 jumbotron'>
+            <h2 class='display-4 ml-2'>Welcome to the Test</h2>
+            <p class='col-12 mt-3' id="jumbotron">We're going to build a cool application using an MVC framework! This application was built with the Village88 folks!</p>
+            <form action='/signin' method='post' class='col-3 mt-5 offset-8 float-right'>
+                {% csrf_token %}
+                <button type='submit' name='start' class='btn col-9 btn-success'>Start</button>
+            </form>
+        </div>
+        <div class='row offset-1 col-10'>
+            <div class='col-4'>
+                <h4>Manage Users</h4>
+                <p>Using this application, you'll learn how to add, remove, and edit users for the application</p>
+            </div>
+            <div class='col-4'>
+                <h4>Leave Messages</h4>
+                <p>Users will be able to leave a message to another user using this application.</p>
+            </div>
+            <div class='col-4'>
+                <h4>Edit User Information</h4>
+                <p>Adminds will be able to edit another user's information (email address, first name, last name, etc.)</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

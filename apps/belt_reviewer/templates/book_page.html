@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Book and Review</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg border-bottom border-dark navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/books">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/users/logoff">
+                    <button class="btn btn-light my-2 my-sm-0" type="submit">logout</button>
+                </form>
+            </div>
+        </nav>
+    <div class='container'>
+        <div class='row mt-3'>
+            <h3>{{ book.title }}</h3>
+            <p class='col-12'>Author: {{ book.author.name }}</p>
+        </div>
+        <div class='row mt-4'>
+            <h4>Reviews</h4>
+        </div>
+        <div class='row'>
+            <div class='col-7'>
+                {% for review in book.book_reviews.all %}
+                <div class='border-top'>
+                    <p class='col-3'>Rating: {{ review.star_rating }}</p>
+                    <p><a href='/users/{{ review.reviewed_by_user.id }}'>{{ review.reviewed_by_user.name }}</a> says: {{ review.content }}</p>
+                    <p class='col-6'>Posted on {{ review.created_at }}</p>
+                    {% if review.reviewed_by_user.id == activeUser.id %}
+                    <a href='/books/{{ review.review_of_book.id }}/{{ review.id }}/remove' class='col-4 offset-2'>Delete this review</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class='col-5'>
+                <form action='/books/{{ book.id }}/review' method='post' class='form-group'>
+                    {% csrf_token %}
+                    <label for='newReview'>Add a Review:</label>
+                    <textarea rows='4' name='content' class='form-control'></textarea>
+                    <div class='form-row'>
+                        <select name='star_rating' class='col-2 form-control ml-1 mt-2'>
+                            <option value='1'>1</option>
+                            <option value='2'>2</option>
+                            <option value='3'>3</option>
+                            <option value='4'>4</option>
+                            <option value='5'>5</option>
+                        </select>
+                        <p class='col-2'>Stars</p>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

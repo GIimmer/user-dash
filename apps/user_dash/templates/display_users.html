@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Display</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg border-bottom border-dark navbar-light bg-light">
+            <a class="navbar-brand" href="/">Test App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/users/edit/{{ request.session.activeUser_id }}">Profile <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action='/users/logoff' method='post'>
+                    {% csrf_token %}
+                    <button class="btn btn-light my-2 my-sm-0" type="submit">Log Off</button>
+                </form>
+            </div>
+        </nav>
+    <div class='container'>
+        <div class='row mt-5'>
+            {% if activeUser.user_level == 1 %}
+            <h3 class='col-12'> All Users</h3>
+            {% endif %}
+            {% if activeUser.user_level == 9 %}
+            <h3 class='col-8'> Manage Users</h3>
+            <a href='/users/new' class='btn btn-primary col-2 offset-2'>Add new</a>
+            {% endif %}
+        </div>
+        <div class='row mt-4'>
+            <div class='table-responsive'>
+                <table class='table'>
+                    <thead class='thead-dark'>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Created At</th>
+                        <th>User Level</th>
+                        {% if activeUser.user_level == 9 %}
+                        <th>actions</th>
+                        {% endif %}
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td><a href='/users/show/{{ user.id }}'>{{ user.first_name }} {{ user.last_name }}</a></td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.created_at }}</td>
+                            <td>{{ user.user_level }}</td>
+                            {% if activeUser.user_level == 9 %}
+                            <td>
+                                <a href='users/edit/{{ user.id }}'>Edit</a>
+                                <a href='users/remove/{{ user.id }}' class='ml-3'>Remove</a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

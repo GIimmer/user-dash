@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <style>
+        #booklist{
+            overflow: scroll;
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg border-bottom border-dark navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/">welcome, {{ activeUser.name }}! <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/books/add">Add Book and Review <span class="sr-only">(current)</span></a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/users/logoff">
+                    <button class="btn btn-light my-2 my-sm-0" type="submit">logout</button>
+                </form>
+            </div>
+        </nav>
+    <div class='container'>
+        <div class='row mt-5'>
+            <div class='col-7'>
+                <h4>Recent Book Reviews</h4>
+                {% for review in reviews.all %}
+                <div>
+                    <a href='/books{{ review.review_of.id }}'>{{ review.content }}}</a>
+                    <p>Rating: </p>
+                    {% for star in review.star_rating %}
+                    <img src='#'>
+                    {% endfor %}
+                    <p><a href='/users/{{ review.created_by.id }}'>Jerry</a> says: {{ review.content }}</p>
+                    <p class='col-6'>Posted on {{ review.created_at }}</p>
+                    <a href='/books/{{ book.id }}/{{ review.id }}/remove' class='col-4 offset-2'>Delete this review</a>
+                </div>
+            </div>
+            <div class='col-5'>
+                <h3>Other books with reviews:</h3>
+                <div class='' id='bookList'>
+                    {% for book in reviews.all %}
+                    <a href='/books/{{ book.id }}'>{{ book.title }}</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
